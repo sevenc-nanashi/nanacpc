@@ -1,0 +1,33 @@
+{
+  "name": "nanacpc",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc -b && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@mdit/plugin-katex": "^0.24.1",
+    "@shikijs/markdown-it": "^3.19.0",
+    "js-sha256": "^0.11.1",
+    "katex": "^0.16.25",
+    "markdown-it": "^14.1.0",
+    "shiki": "^3.19.0",
+    "vue": "^3.5.24"
+  },
+  "devDependencies": {
+    "@fontsource/m-plus-1p": "^5.2.8",
+    "@types/markdown-it": "^14.1.2",
+    "@types/node": "^24.10.1",
+    "@vitejs/plugin-vue": "^6.0.1",
+    "@vue/tsconfig": "^0.8.1",
+    "typescript": "~5.9.3",
+    "vite": "npm:rolldown-vite@7.2.5",
+    "vue-tsc": "^3.1.4"
+  },
+  "overrides": {
+    "vite": "npm:rolldown-vite@7.2.5"
+  }
+}

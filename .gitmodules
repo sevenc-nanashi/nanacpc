@@ -1,0 +1,6 @@
+[submodule "data/nanacpp"]
+	path = data/nanacpp
+	url = https://github.com/sevenc-nanashi/nanacpp
+[submodule "data/ac-library"]
+	path = data/ac-library
+	url = https://github.com/atcoder/ac-library

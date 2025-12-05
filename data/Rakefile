@@ -1,0 +1,89 @@
+task default: [:build]
+
+task :build do
+  require "json"
+  contents = []
+
+  Dir
+    .glob("./ac-library/atcoder/*.hpp")
+    .map do |file|
+      header = "atcoder/#{File.basename(file)}"
+      document_path =
+        "./ac-library/document_ja/#{File.basename(file, ".hpp")}.md"
+      if File.exist?(document_path)
+        document = File.read(document_path, encoding: "UTF-8")
+        document.gsub!(/@\{keyword\.(.+?)\}/) do |_|
+          case Regexp.last_match(1)
+          when "constraints"
+            "制約"
+          when "complexity"
+            "計算量"
+          when "description"
+            "説明"
+          when "examples"
+            "例"
+          else
+            Regexp.last_match(0)
+          end
+        end
+        document.gsub!(/@\{example\.(.+?)\}/) do |_|
+          example_file =
+          "./ac-library/test/example/#{Regexp.last_match(1)}.cpp"
+          if File.exist?(example_file)
+            <<~MARKDOWN
+            ```cpp
+            #{File.read(example_file, encoding: "UTF-8")}
+            ```
+            MARKDOWN
+          else
+            Regexp.last_match(0)
+          end
+        end
+      else
+        document = "No documentation found."
+      end
+      contents << <<~MARKDOWN
+      # ! #{header}
+      ```cpp hash
+      #{File.read(file, encoding: "UTF-8")}
+      ```
+
+      # ! Documentation
+      #{document}
+      MARKDOWN
+    end
+
+  contents << <<~MARKDOWN
+  # ! ac-library/appendix
+
+  #{File.read("./ac-library/document_ja/appendix.md", encoding: "UTF-8")}
+  MARKDOWN
+
+  Dir
+    .glob("./nanacpp/features/*.hpp")
+    .map do |file|
+      header = "nanacpp/#{File.basename(file)}"
+      contents << <<~MARKDOWN
+      # ! #{header}
+      ```cpp hash
+      #{File.read(file, encoding: "UTF-8")}
+      ```
+      MARKDOWN
+    end
+
+  Dir.glob("./contents/*.md").map do |file|
+    contents << File.read(file, encoding: "UTF-8")
+  end
+
+  Dir.glob("./scripts/*.py").map do |file|
+    contents << <<~MARKDOWN
+    # ! scripts/#{File.basename(file)}
+    ```py hash
+    #{File.read(file, encoding: "UTF-8")}
+    ```
+    MARKDOWN
+  end
+
+  # contents = [contents[0]]
+  File.write("./contents.json", JSON.pretty_generate(contents))
+end

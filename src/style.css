@@ -1,0 +1,31 @@
+:root {
+  font-family: "M PLUS 1p", sans-serif;
+}
+
+.super-header {
+  color: #17288b;
+}
+
+.shiki {
+  padding: 1rem;
+  background: #f6f8fa !important;
+
+  .line[data-shiki-hash]::before {
+    content: attr(data-shiki-hash);
+    padding-right: 0.5rem;
+    margin-right: 0.5rem;
+    border-right: 1px solid #d0d7de;
+  }
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin-bottom: 1rem;
+}
+th,
+td {
+  border: 1px solid #dee2e6;
+  padding: 0.75rem;
+  text-align: left;
+}
