@@ -3,7 +3,7 @@ import { katex } from "@mdit/plugin-katex";
 import markdownItShiki from "@shikijs/markdown-it";
 import { sha256 } from "js-sha256";
 import type { ShikiTransformer } from "shiki";
-import theme from "./theme.json"
+import theme from "./theme.json";
 
 function mditHeaderPlugin(md: MarkdownIt) {
   const headingRenderer =
@@ -41,19 +41,23 @@ function shikiHashPlugin(): ShikiTransformer {
       }
       hast.properties = hast.properties || {};
       const content = this.source.split("\n")[line - 1];
-      const hash = sha256(content).slice(0, 4);
+      if (this.source.split("\n").length === line && !content) {
+        return hast;
+      }
+      const hash = sha256(content.replace(/[ \t]/g, "")).slice(0, 4);
       hast.properties["data-shiki-hash"] = hash;
       return hast;
     },
   };
 }
 
+const grayscale = false;
 export const md = new MarkdownIt()
   .use(katex)
   .use(
     await markdownItShiki({
       langs: ["cpp", "python"],
-      theme,
+      theme: grayscale ? (theme as any) : "vitesse-light",
       transformers: [shikiHashPlugin()],
     }),
   )
