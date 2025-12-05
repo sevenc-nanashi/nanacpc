@@ -1,5 +1,6 @@
 :root {
   font-family: "M PLUS 1p", sans-serif;
+  font-size: 8px;
 }
 
 .super-header {
@@ -26,6 +27,6 @@ table {
 th,
 td {
   border: 1px solid #dee2e6;
-  padding: 0.75rem;
+  padding: 0.5rem;
   text-align: left;
 }

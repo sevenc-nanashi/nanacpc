@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+# coding: UTF-8
 task default: [:build]
 
 task :build do
   require "json"
-  contents = []
+  contents = {}
 
   Dir
     .glob("./ac-library/atcoder/*.hpp")
@@ -42,7 +44,9 @@ task :build do
       else
         document = "No documentation found."
       end
-      contents << <<~MARKDOWN
+      contents[
+        header
+      ] = <<~MARKDOWN
       # ! #{header}
       ```cpp hash
       #{File.read(file, encoding: "UTF-8")}
@@ -53,7 +57,7 @@ task :build do
       MARKDOWN
     end
 
-  contents << <<~MARKDOWN
+  contents["ac-library/appendix.md"] = <<~MARKDOWN
   # ! ac-library/appendix
 
   #{File.read("./ac-library/document_ja/appendix.md", encoding: "UTF-8")}
@@ -63,7 +67,7 @@ task :build do
     .glob("./nanacpp/features/*.hpp")
     .map do |file|
       header = "nanacpp/#{File.basename(file)}"
-      contents << <<~MARKDOWN
+      contents[header] = <<~MARKDOWN
       # ! #{header}
       ```cpp hash
       #{File.read(file, encoding: "UTF-8")}
@@ -72,11 +76,12 @@ task :build do
     end
 
   Dir.glob("./contents/*.md").map do |file|
-    contents << File.read(file, encoding: "UTF-8")
+    header = "contents/#{File.basename(file)}"
+    contents[header] = File.read(file, encoding: "UTF-8")
   end
 
   Dir.glob("./scripts/*.py").map do |file|
-    contents << <<~MARKDOWN
+    contents["scripts/#{File.basename(file)}"] = <<~MARKDOWN
     # ! scripts/#{File.basename(file)}
     ```py hash
     #{File.read(file, encoding: "UTF-8")}

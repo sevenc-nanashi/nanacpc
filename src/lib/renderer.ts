@@ -3,6 +3,7 @@ import { katex } from "@mdit/plugin-katex";
 import markdownItShiki from "@shikijs/markdown-it";
 import { sha256 } from "js-sha256";
 import type { ShikiTransformer } from "shiki";
+import theme from "./theme.json"
 
 function mditHeaderPlugin(md: MarkdownIt) {
   const headingRenderer =
@@ -52,10 +53,7 @@ export const md = new MarkdownIt()
   .use(
     await markdownItShiki({
       langs: ["cpp", "python"],
-      themes: {
-        light: "github-light",
-        dark: "github-dark",
-      },
+      theme,
       transformers: [shikiHashPlugin()],
     }),
   )
